@@ -1,0 +1,28 @@
+{
+  "name": "vue-ripple-lite",
+  "version": "1.0.0",
+  "description": "vue directive to enable ripple effect, very simple and liteweight",
+  "main": "./src/ripple.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack-dev-server --hot --open"
+  },
+  "keywords": [
+    "vue",
+    "ripple effect"
+  ],
+  "author": "stephenykk@163.com",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "css-loader": "^0.28.9",
+    "html-webpack-plugin": "^2.30.1",
+    "style-loader": "^0.19.1",
+    "vue-loader": "^13.7.0",
+    "vue-template-compiler": "^2.5.13",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}
