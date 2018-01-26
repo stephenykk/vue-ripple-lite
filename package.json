@@ -1,6 +1,6 @@
 {
   "name": "vue-ripple-lite",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "vue directive to enable ripple effect, very simple and liteweight",
   "main": "./dist/ripple.js",
   "scripts": {
