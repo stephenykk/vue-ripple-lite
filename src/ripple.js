@@ -1,5 +1,17 @@
 import './ripple.css';
 
+function throttle(fn, delay = 50) {
+    var enable = true;
+    return function (...args) {
+        if (!enable) return;
+        fn.apply(this, args);
+        enable = false;
+        setTimeout(function () {
+            enable = true;
+        }, delay);
+    }
+}
+
 export default function (Vue) {
     Vue.directive('ripple', {
         inserted(el, binding, value) {
@@ -63,7 +75,7 @@ export default function (Vue) {
                 touchEnd = true;
             }
 
-            function onTransitionend(ev) {
+            function _onTransitionend(ev) {// 多个属性会触发多次 transitionend
                 rippleDiv.classList.remove('touchstart');
                 resetSize();
                 if (touchEnd) {// 过渡结束前 touchend
@@ -71,6 +83,8 @@ export default function (Vue) {
                 }
                 transEnd = true;
             }
+
+            var onTransitionend = throttle(_onTransitionend);
 
             bindEvent(el);
             el.unbindEvent = unbindEvent;

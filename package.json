@@ -12,6 +12,10 @@
     "ripple effect"
   ],
   "author": "stephenykk@163.com",
+  "homepage": "https://github.com/stephenykk/vue-ripple-lite#readme",
+  "bugs": {
+    "url": "https://github.com/stephenykk/vue-ripple-lite/issues"
+  },
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.0",

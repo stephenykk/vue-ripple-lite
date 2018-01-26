@@ -28,4 +28,4 @@ demo
 
     git clone   xxxx.git
     cnpm i
-    npm run dev
+    npm run dev # 访问 http://localhost:8080/example.html , 模拟手机，预览demo
