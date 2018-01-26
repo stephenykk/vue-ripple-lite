@@ -24,7 +24,7 @@ export default function (Vue) {
             var transEnd = true;
             var touchEnd = true;
 
-            function setSize(el) {
+            function setSizeAndBg(el) {
                 var style = getComputedStyle(el, null);
                 var width = parseInt(style.width);
                 var height = parseInt(style.height);
@@ -32,10 +32,14 @@ export default function (Vue) {
 
                 var size = el.dataset.size;
                 rippleDiv.style.width = rippleDiv.style.height = (size ? parseInt(size) : autoSize) + 'px';
+                var bg = el.dataset.background;
+                bg && (rippleDiv.style.backgroundColor = bg);
             }
 
-            function resetSize() {
+            function resetSizeAndBg(el) {
                 rippleDiv.style.width = rippleDiv.style.height = '5px';
+                var bg = el.dataset.background;
+                bg && (rippleDiv.style.backgroundColor = 'transparent');
             }
 
             function bindEvent(el) {
@@ -61,24 +65,24 @@ export default function (Vue) {
                 rippleDiv.style.top = touch.clientY - rect.top + 'px';
 
                 rippleDiv.classList.add('touchstart');
-                setSize(this);
+                setSizeAndBg(this);
             }
 
 
             function onTouchend(ev) {
                 if (transEnd) {
                     rippleDiv.classList.remove('touchstart');
-                    resetSize();
+                    resetSizeAndBg(this);
                 } else {
                     rippleDiv.classList.add('touchend'); // 背景色向透明渐变
                 }
                 touchEnd = true;
             }
 
-            function _onTransitionend(ev) {// 多个属性会触发多次 transitionend
+            function _onTransitionend(ev) { // 多个属性会触发多次 transitionend
                 rippleDiv.classList.remove('touchstart');
-                resetSize();
-                if (touchEnd) {// 过渡结束前 touchend
+                resetSizeAndBg(el);
+                if (touchEnd) { // 过渡结束前 touchend
                     rippleDiv.classList.remove('touchend');
                 }
                 transEnd = true;

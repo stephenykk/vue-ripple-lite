@@ -22,6 +22,9 @@ usage
     <!-- 设置波纹最终的大小，可控制波纹扩散速度 -->
     <div class="example2" v-ripple data-size="1000"></div>  
 
+    <!-- 设置波纹颜色 -->
+    <div class="example2" v-ripple data-size="1000" data-background="rgba(200, 233, 200, .3)"></div>  
+
 demo
 ---
 开启本地web服务，chrome模拟手机设备，点击预览波纹效果

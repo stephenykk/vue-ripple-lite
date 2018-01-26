@@ -18,7 +18,7 @@
     transition-property: width, height, background-color;
     transition-duration: 1s;
     transition-timing-function: ease-in;
-    background-color: rgba(0, 0, 0, .15);
+    background-color: rgba(0, 0, 0, .1);
 }
 
 .ripple-div.touchend {
