@@ -2,10 +2,11 @@
   "name": "vue-ripple-lite",
   "version": "1.0.1",
   "description": "vue directive to enable ripple effect, very simple and liteweight",
-  "main": "./src/ripple.js",
+  "main": "./dist/ripple.js",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server --hot --open"
+    "dev": "webpack-dev-server --hot --open",
+    "publish": "npm run build && npm publish"
   },
   "keywords": [
     "vue",
