@@ -15,17 +15,36 @@ function throttle(fn, delay = 50) {
 export default function (Vue) {
     Vue.directive('ripple', {
         inserted(el, binding, value) {
-            el.classList.add('ripple-wrap');
+            var rippleWrap = el;
+            if (el.dataset.range === 'content-box') {// 目标元素的content-box, 作为波纹效果的范围
+                el.style.position = 'relative';
+                rippleWrap = document.createElement('div');
+                rippleWrap.classList.add('contentbox');
+                var elStyle = getComputedStyle(el, null);
+                var style = {
+                    position: 'absolute',
+                    left: elStyle.paddingLeft,
+                    right: elStyle.paddingRight,
+                    top: elStyle.paddingTop,
+                    bottom: elStyle.paddingBottom
+                };
+
+                Object.assign(rippleWrap.style, style);
+                el.appendChild(rippleWrap);
+                el.rippleWrap = rippleWrap;
+            }
+
+            rippleWrap.classList.add('ripple-wrap');
             var rippleDiv = document.createElement('div');
             rippleDiv.classList.add('ripple-div');
-            el.appendChild(rippleDiv);
+            rippleWrap.appendChild(rippleDiv);
 
 
             var transEnd = true;
             var touchEnd = true;
 
-            function setSizeAndBg(el) {
-                var style = getComputedStyle(el, null);
+            function setSizeAndBg(rippleWrap) {
+                var style = getComputedStyle(rippleWrap, null);
                 var width = parseInt(style.width);
                 var height = parseInt(style.height);
                 var autoSize = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * 2.5;
@@ -36,15 +55,15 @@ export default function (Vue) {
                 bg && (rippleDiv.style.backgroundColor = bg);
             }
 
-            function resetSizeAndBg(el) {
+            function resetSizeAndBg(rippleWrap) {
                 rippleDiv.style.width = rippleDiv.style.height = '5px';
                 var bg = el.dataset.background;
                 bg && (rippleDiv.style.backgroundColor = 'transparent');
             }
 
-            function bindEvent(el) {
-                el.addEventListener('touchstart', onTouchstart, false);
-                el.addEventListener('touchend', onTouchend, false);
+            function bindEvent(rippleWrap) {
+                rippleWrap.addEventListener('touchstart', onTouchstart, false);
+                rippleWrap.addEventListener('touchend', onTouchend, false);
                 rippleDiv.addEventListener('transitionend', onTransitionend, false);
             }
 
@@ -81,7 +100,7 @@ export default function (Vue) {
 
             function _onTransitionend(ev) { // 多个属性会触发多次 transitionend
                 rippleDiv.classList.remove('touchstart');
-                resetSizeAndBg(el);
+                resetSizeAndBg(rippleWrap);
                 if (touchEnd) { // 过渡结束前 touchend
                     rippleDiv.classList.remove('touchend');
                 }
@@ -90,7 +109,7 @@ export default function (Vue) {
 
             var onTransitionend = throttle(_onTransitionend);
 
-            bindEvent(el);
+            bindEvent(rippleWrap);
             el.unbindEvent = unbindEvent;
         },
         unbind(el) {
