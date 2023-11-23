@@ -20,14 +20,14 @@ export default defineConfig({
     // sourcemap: 'hidden'
     // sourcemap: true,
     // manifest: true,
-    lib: {
-      entry: './src/main.ts',
-      name: 'RippleLite',
-      // formats: ['es'], // esm
-      // formats: ['umd'], 
-      formats: ['es', 'umd'],
-      fileName: 'index'
-    }
+    // lib: {
+    //   entry: './src/main.ts',
+    //   name: 'RippleLite',
+    //   // formats: ['es'], // esm
+    //   // formats: ['umd'], 
+    //   formats: ['es', 'umd'],
+    //   fileName: 'index'
+    // }
   },
   server: {
     host: true,

@@ -7,9 +7,10 @@
   "module": "dist/index.js",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check build-only",
+    "build": "run-p type-check build-lib",
     "preview": "vite preview",
-    "build-only": "vite build",
+    "build-lib": "vite build --config vite.config.lib.ts",
+    "build-demo": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"

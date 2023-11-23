@@ -1,11 +1,19 @@
-import "./ripple.css";
+import rippleStyle from "./ripple.css?raw";
+
+function checkIsMobile() {
+  const mobileRe = /Android|iPhone|SymbianOS|Windows Phone|iPad|iPod/i;
+
+  const agent = navigator.userAgent;
+
+  return mobileRe.test(agent);
+}
 
 function throttle(fn: (...arg: any[]) => any, delay = 50) {
   var enable = true;
   return function (...args: any[]) {
     if (!enable) return;
     // fn.apply(this, args);
-    fn(...args)
+    fn(...args);
     enable = false;
     setTimeout(function () {
       enable = true;
@@ -13,12 +21,23 @@ function throttle(fn: (...arg: any[]) => any, delay = 50) {
   };
 }
 
+const isMobile = checkIsMobile();
+
 const ripple = {
   mounted(el: HTMLElement) {
+    const addStyle = () => {
+      if (document.querySelector("#ripple-style")) return;
+
+      const style = document.createElement("style");
+      style.setAttribute("id", "ripple-style");
+      style.type = "text/css";
+      document.head.appendChild(style);
+      style.innerHTML = rippleStyle;
+    };
+
     const appendRippleWrap = (el: HTMLElement) => {
       const wrapDiv = document.createElement("div");
       wrapDiv.classList.add("contentbox");
-      wrapDiv.classList.add("ripple-wrap");
 
       var elStyle = getComputedStyle(el, null);
       var style = {
@@ -29,6 +48,7 @@ const ripple = {
         bottom: elStyle.paddingBottom,
       };
       Object.assign(wrapDiv.style, style);
+      console.log("🚀 ~ file: index.ts:41 ~ appendRippleWrap ~ style:", style);
 
       el.appendChild(wrapDiv);
       // @ts-ignore
@@ -37,12 +57,16 @@ const ripple = {
       return wrapDiv;
     };
 
+    addStyle();
+
     var rippleWrap = el;
     if (el.dataset.range === "content-box") {
       // 目标元素的content-box, 作为波纹效果的范围
       el.style.position = "relative";
       rippleWrap = appendRippleWrap(el);
     }
+
+    rippleWrap.classList.add("ripple-wrap");
 
     var rippleDiv = document.createElement("div");
     rippleDiv.classList.add("ripple-div");
@@ -71,41 +95,55 @@ const ripple = {
     }
 
     function bindEvent(rippleWrap: HTMLElement) {
-      rippleWrap.addEventListener("touchstart", onTouchstart, false);
-      rippleWrap.addEventListener("touchend", onTouchend, false);
+      if (isMobile) {
+        rippleWrap.addEventListener("touchstart", onTouchstart, false);
+        rippleWrap.addEventListener("touchend", onTouchend, false);
+      } else {
+        rippleWrap.addEventListener("mousedown", onTouchstart, false);
+        rippleWrap.addEventListener("mouseup", onTouchend, false);
+      }
       rippleDiv.addEventListener("transitionend", onTransitionend, false);
     }
 
     function unbindEvent() {
-      el.removeEventListener("touchstart", onTouchstart, false);
-      el.removeEventListener("touchend", onTouchend, false);
+      if (isMobile) {
+        el.removeEventListener("touchstart", onTouchstart, false);
+        el.removeEventListener("touchend", onTouchend, false);
+      } else {
+        el.removeEventListener("mousedown", onTouchstart, false);
+        el.removeEventListener("mouseup", onTouchend, false);
+      }
       rippleDiv.removeEventListener("transitionend", onTransitionend, false);
     }
 
-    function onTouchstart(ev: TouchEvent) {
+    function onTouchstart(ev: TouchEvent | MouseEvent) {
       if (!transEnd) return;
       touchEnd = transEnd = false;
 
       // set position of ripple-div
-      var touch = ev.changedTouches[0];
-      const thisEl = ev.target as HTMLElement
+      // @ts-ignore
+      var touch = ev.changedTouches ? ev.changedTouches[0] : ev;
+      const thisEl = ev.target as HTMLElement;
       var rect = thisEl.getBoundingClientRect();
       rippleDiv.style.left = touch.clientX - rect.left + "px";
       rippleDiv.style.top = touch.clientY - rect.top + "px";
 
       rippleDiv.classList.add("touchstart");
+      rippleDiv.classList.remove("touchend");
       setSizeAndBg(thisEl);
     }
 
-    function onTouchend(ev: TouchEvent) {
-      if (transEnd) {
-        rippleDiv.classList.remove("touchstart");
-        const thisEl = ev.target as HTMLElement
-        resetSizeAndBg(thisEl);
-      } else {
-        rippleDiv.classList.add("touchend"); // 背景色向透明渐变
-      }
+    function onTouchend(ev: TouchEvent | MouseEvent) {
+      transEnd = true;
       touchEnd = true;
+      rippleDiv.classList.add("touchend"); // 背景色向透明渐变
+
+      setTimeout(() => {
+        rippleDiv.classList.remove("touchstart");
+        rippleDiv.classList.remove("touchend");
+        const thisEl = ev.target as HTMLElement;
+        resetSizeAndBg(thisEl);
+      }, 1000);
     }
 
     function _onTransitionend(ev: TouchEvent) {

@@ -4,6 +4,7 @@
 }
 
 .ripple-div {
+    pointer-events: none;
     position: absolute;
     left: 0;
     top: 0;
@@ -15,12 +16,17 @@
 }
 
 .ripple-div.touchstart {
+    background: blue;
     transition-property: width, height, background-color;
-    transition-duration: 1s;
+    transition-duration: 1.5s;
     transition-timing-function: ease-in;
-    background-color: rgba(0, 0, 0, .1);
+    /* opacity: 0; */
+    background-color: transparent;
 }
 
 .ripple-div.touchend {
-    background-color: transparent;
+    transition-property: width, height, background-color;
+    transition-duration: 1s;
+    transition-timing-function: ease-out;
+    background-color: transparent !important;
 }
