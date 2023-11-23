@@ -1,0 +1,26 @@
+.ripple-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-div {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+}
+
+.ripple-div.touchstart {
+    transition-property: width, height, background-color;
+    transition-duration: 1s;
+    transition-timing-function: ease-in;
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.ripple-div.touchend {
+    background-color: transparent;
+}

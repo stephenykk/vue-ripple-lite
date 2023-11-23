@@ -1,12 +1,5 @@
-import './assets/main.css'
+import { ripple } from '@/directives'
 
-import { createApp } from 'vue'
-
-import App from './App.vue'
-import router from './router'
-
-const app = createApp(App)
-
-app.use(router)
-
-app.mount('#app')
+export default function (App: any) {
+    App.directive('ripple', ripple);
+}

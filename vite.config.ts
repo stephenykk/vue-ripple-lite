@@ -21,12 +21,12 @@ export default defineConfig({
     // sourcemap: true,
     // manifest: true,
     lib: {
-      entry: './src/directives/ripple.ts',
+      entry: './src/main.ts',
       name: 'RippleLite',
       // formats: ['es'], // esm
       // formats: ['umd'], 
-      formats: ['cjs'], // commonjs
-      fileName: 'ripple-lite'
+      formats: ['es', 'umd'],
+      fileName: 'index'
     }
   },
   server: {

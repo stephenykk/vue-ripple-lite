@@ -1,9 +1,11 @@
 {
-  "name": "vue-project",
+  "name": "vue-ripple-lite",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "module": "dist/index.js",
   "scripts": {
-    "ripple": "vite build --config vite.config.lib.ts",
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
