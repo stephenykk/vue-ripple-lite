@@ -1,19 +1,17 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueJsx from "@vitejs/plugin-vue-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-  ],
+  base: "./",
+  plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
   },
   build: {
     // cssCodeSplit: false  // only one css file , including async chunk's css
@@ -24,17 +22,17 @@ export default defineConfig({
     //   entry: './src/main.ts',
     //   name: 'RippleLite',
     //   // formats: ['es'], // esm
-    //   // formats: ['umd'], 
+    //   // formats: ['umd'],
     //   formats: ['es', 'umd'],
     //   fileName: 'index'
     // }
   },
   server: {
     host: true,
-    port: 3030
+    port: 3030,
   },
   preview: {
     host: true, // all address , same as 0.0.0.0
     port: 3031,
-  }
-})
+  },
+});

@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-lib",
+    "build-all": "run-p build-lib build-demo",
     "preview": "vite preview",
     "build-lib": "vite build --config vite.config.lib.ts",
     "build-demo": "vite build",
